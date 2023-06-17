@@ -1,9 +1,9 @@
 "use client";
+import { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import logo from "@public/assets/images/logo.svg";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
 
 const Nav = () => {
     const { data: session } = useSession();
@@ -19,7 +19,9 @@ const Nav = () => {
                 //Desktop
                 <>
                     <div className="relative hidden sm:flex gap-3 md:gap-5">
-                        <button className="black_btn">Create post</button>
+                        <Link className="black_btn" href="/create-prompt">
+                            Create post
+                        </Link>
                         <button className="outline_btn" onClick={signOut}>
                             Sign out
                         </button>
