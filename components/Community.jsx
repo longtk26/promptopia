@@ -7,41 +7,29 @@ const Community = () => {
 
     useEffect(() => {
         const getAllPrompts = async () => {
-            let promptsInfo = [];
             const res = await fetch("/api/prompt");
             const allPrompts = await res.json();
             allPrompts.reverse();
 
-            for (const prompt of allPrompts) {
-                const res = await fetch(`/api/user/${prompt.creator}`);
-                const user = await res.json();
-                const result = { ...prompt, ...user };
-                promptsInfo.push(result);
-            }
-
-            setPrompts((prev) => [...promptsInfo, ...prev]);
+            setPrompts(allPrompts);
         };
-        const handlePrompt = async () => {
-            await getAllPrompts();
-        };
-
-        handlePrompt();
+        getAllPrompts();
     }, []);
 
     return (
         <section
             className="mt-[178px] py-8 w-full flex-center flex-col gap-y-6
-        sm:flex-row sm:flex-wrap sm:gap-6 sm:min-w-[744px] xl:justify-normal"
+        sm:flex-row sm:flex-wrap sm:gap-6 sm:min-w-[744px] xl:justify-normal sm:items-start"
         >
-            {prompts?.map((item, index) => (
+            {prompts?.map((item) => (
                 <User
-                    key={index}
+                    key={item._id}
                     prompt={item.prompt}
                     tag={item.tag}
-                    username={item.username}
-                    userId={item.creator}
-                    email={item.email}
-                    image={item.image}
+                    username={item.creator.username}
+                    userId={item.creator._id}
+                    email={item.creator.email}
+                    image={item.creator.image}
                 />
             ))}
         </section>

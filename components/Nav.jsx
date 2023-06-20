@@ -11,10 +11,10 @@ const Nav = () => {
 
     return (
         <nav className="flex h-[46px] justify-between items-center w-full pt-3 mb-16">
-            <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
                 <Image src={logo} alt="logo" width={30} height={30} />
                 <p className="logo_text">Promptopia</p>
-            </div>
+            </Link>
             {session?.user ? (
                 //Desktop
                 <>
@@ -25,13 +25,15 @@ const Nav = () => {
                         <button className="outline_btn" onClick={signOut}>
                             Sign out
                         </button>
-                        <Image
-                            src={session?.user.image}
-                            width={37}
-                            height={37}
-                            alt="profile_img"
-                            className="cursor-pointer rounded-full"
-                        />
+                        <Link href="/profile">
+                            <Image
+                                src={session?.user.image}
+                                width={37}
+                                height={37}
+                                alt="profile_img"
+                                className="cursor-pointer rounded-full"
+                            />
+                        </Link>
                     </div>
                     {/* Mobile */}
                     <div className="relative sm:hidden">
