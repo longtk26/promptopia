@@ -8,9 +8,31 @@ export const GET = async (_, context) => {
         const { id } = context.params;
         const userPrompts = await Prompt.find({ creator: id });
 
-        return NextResponse.json(userPrompts, { status: 200 });
+        // If pass userId will res all prompts that user created
+        // Otherwise will res one prompt
+        if (userPrompts?.length === 0) {
+            const prompt = await Prompt.findOne({ _id: id });
+
+            return NextResponse.json(prompt, { status: 200 });
+        } else {
+            return NextResponse.json(userPrompts, { status: 200 });
+        }
     } catch (error) {
         return NextResponse("Failed to get prompts of user", { status: 500 });
+    }
+};
+
+export const PUT = async (req) => {
+    try {
+        await connectToDB();
+        const { id, prompt, tag } = await req.json();
+
+        await Prompt.updateOne({ _id: id }, { prompt: prompt, tag: tag });
+
+        return new NextResponse("Update successfully!", { status: 200 });
+    } catch (error) {
+        console.log(error);
+        return new NextResponse("Failed to updated!", { status: 500 });
     }
 };
 

@@ -1,30 +1,42 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { createPrompt, editPrompt } from "@utils";
 
-const Form = ({ title }) => {
+const Form = ({ title, action, promptId }) => {
     const router = useRouter();
-    const [buttonCreate, setButtonCreate] = useState("Create");
+    const promptRef = useRef();
+    const tagRef = useRef();
+    const [buttonAction, setButtonAction] = useState(action);
     const { data: session } = useSession();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const prompt = e.target[0].value;
         const tag = e.target[1].value;
-        setButtonCreate("Creating...");
-        await fetch("/api/prompt/new", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                id: session?.user.id,
-                prompt,
-                tag,
-            }),
-        });
-        router.push("/");
+
+        if (action === "Create") {
+            createPrompt(setButtonAction, session?.user.id, prompt, tag);
+            router.push("/");
+        } else {
+            editPrompt(setButtonAction, promptId, prompt, tag);
+            router.push("/");
+        }
     };
+
+    useEffect(() => {
+        if (action === "Edit") {
+            const getPrompt = async () => {
+                const res = await fetch(`/api/prompt/${promptId}`);
+                const prompt = await res.json();
+                promptRef.current.value = prompt.prompt;
+                tagRef.current.value = prompt.tag;
+            };
+            getPrompt();
+        }
+    }, [action]);
 
     return (
         <section className="w-full">
@@ -32,7 +44,7 @@ const Form = ({ title }) => {
                 <span className="blue_gradient">{title}</span>
             </h1>
             <p className="desc">
-                Create and share amazing prompts with the world, and let your
+                {action} and share amazing prompts with the world, and let your
                 imagination run wild with any AI-powered platform
             </p>
             <form
@@ -45,6 +57,7 @@ const Form = ({ title }) => {
                     </span>
 
                     <textarea
+                        ref={promptRef}
                         placeholder="Write your post here"
                         required
                         className="form_textarea"
@@ -59,6 +72,7 @@ const Form = ({ title }) => {
                         </span>
                     </span>
                     <input
+                        ref={tagRef}
                         placeholder="#Tag"
                         className="form_input"
                         type="text"
@@ -73,7 +87,7 @@ const Form = ({ title }) => {
                         type="submit"
                         className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
                     >
-                        {buttonCreate}
+                        {buttonAction}
                     </button>
                 </div>
             </form>

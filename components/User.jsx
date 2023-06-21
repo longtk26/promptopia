@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import CopyIcon from "@public/assets/icons/copy.svg";
 import TickIcon from "@public/assets/icons/tick.svg";
-import { copyToClipboard, deletePrompt } from "@utils";
+import { copyToClipboard } from "@utils";
+import EditButton from "./EditButton";
 
 const User = ({
     prompt = "Hi all",
@@ -101,19 +102,7 @@ const User = ({
                 #{tag}
             </p>
 
-            {editEnable && (
-                <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-                    <button className="font-inter text-sm green_gradient cursor-pointer">
-                        Edit
-                    </button>
-                    <button
-                        onClick={() => deletePrompt(promptId)}
-                        className="font-inter text-sm orange_gradient cursor-pointer"
-                    >
-                        Delete
-                    </button>
-                </div>
-            )}
+            {editEnable && <EditButton promptId={promptId} userId={userId} />}
         </div>
     );
 };

@@ -1,25 +1,33 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { useSession } from "next-auth/react";
 import ProfileUser from "@components/ProfileUser";
+
+export const ProfileContext = createContext();
 
 const Profile = () => {
     const { data: session } = useSession();
     const [prompts, setPrompts] = useState([]);
 
+    const getPrompts = async (userId) => {
+        const res = await fetch(`/api/prompt/${userId}`);
+        const prompts = await res.json();
+        prompts.reverse();
+        setPrompts(prompts);
+    };
+
     useEffect(() => {
         if (session) {
-            const getPrompts = async () => {
-                const res = await fetch(`/api/prompt/${session?.user?.id}`);
-                const prompts = await res.json();
-                setPrompts(prompts);
-            };
-            getPrompts();
+            getPrompts(session?.user?.id);
         }
     }, [session]);
 
     if (session) {
-        return <ProfileUser user={session?.user} prompts={prompts} isLogin />;
+        return (
+            <ProfileContext.Provider value={{ getPrompts }}>
+                <ProfileUser user={session?.user} prompts={prompts} isLogin />;
+            </ProfileContext.Provider>
+        );
     }
 };
 

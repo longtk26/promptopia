@@ -2,9 +2,27 @@ export const copyToClipboard = async (text) => {
     await navigator.clipboard.writeText(text);
 };
 
-export const deletePrompt = async (id) => {
-    const isAccept = confirm("Do you want to delete this prompt?");
-    if (isAccept) {
-        await fetch(`/api/prompt/${id}`, { method: "DELETE" });
-    }
+export const createPrompt = async (setState, id, prompt, tag) => {
+    setState("Creating...");
+    await fetch("/api/prompt/new", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id,
+            prompt,
+            tag,
+        }),
+    });
+};
+
+export const editPrompt = async (setState, id, prompt, tag) => {
+    setState("Editing...");
+    await fetch(`/api/prompt/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            id,
+            prompt,
+            tag,
+        }),
+    });
 };

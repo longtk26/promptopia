@@ -1,6 +1,6 @@
 import User from "./User";
 
-const ProfileUser = ({ user, prompts, isLogin, refresh }) => {
+const ProfileUser = ({ user, prompts, isLogin }) => {
     return (
         <section className="w-full">
             <h1 className="head_text text-left">
@@ -38,13 +38,12 @@ sm:flex-row sm:flex-wrap sm:gap-6 sm:min-w-[744px] xl:justify-normal sm:items-st
                         tag={item.tag}
                         username={
                             user.username ||
-                            user?.name.replace(" ", "").toLowerCase()
+                            user?.name?.replace(" ", "").toLowerCase()
                         }
                         email={user.email}
                         image={user.image}
                         userId={user.id}
                         editEnable={isLogin}
-                        refresh={refresh}
                     />
                 ))}
             </div>
