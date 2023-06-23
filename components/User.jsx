@@ -16,6 +16,7 @@ const User = ({
     userId,
     promptId,
     editEnable,
+    handleClickTag = () => {},
 }) => {
     const [active, setActive] = useState(false);
     const [stateBtn, setStateBtn] = useState("copy");
@@ -98,7 +99,10 @@ const User = ({
             >
                 {active ? "Collapsed" : "View all..."}
             </span>
-            <p className="text-[14px] mt-2 font-inter blue_gradient cursor-pointer">
+            <p
+                onClick={() => handleClickTag(tag)}
+                className="text-[14px] mt-2 font-inter blue_gradient cursor-pointer"
+            >
                 #{tag}
             </p>
 

@@ -2,7 +2,7 @@ export const copyToClipboard = async (text) => {
     await navigator.clipboard.writeText(text);
 };
 
-export const createPrompt = async (setState, id, prompt, tag) => {
+export const createPrompt = async (setState, id, prompt, tag, username) => {
     setState("Creating...");
     await fetch("/api/prompt/new", {
         method: "POST",
@@ -11,6 +11,7 @@ export const createPrompt = async (setState, id, prompt, tag) => {
             id,
             prompt,
             tag,
+            username,
         }),
     });
 };

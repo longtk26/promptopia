@@ -11,6 +11,7 @@ const Form = ({ title, action, promptId }) => {
     const tagRef = useRef();
     const [buttonAction, setButtonAction] = useState(action);
     const { data: session } = useSession();
+    const username = session?.user?.name.replace(" ", "").toLowerCase();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +19,13 @@ const Form = ({ title, action, promptId }) => {
         const tag = e.target[1].value;
 
         if (action === "Create") {
-            createPrompt(setButtonAction, session?.user.id, prompt, tag);
+            createPrompt(
+                setButtonAction,
+                session?.user.id,
+                prompt,
+                tag,
+                username
+            );
             router.push("/");
         } else {
             editPrompt(setButtonAction, promptId, prompt, tag);
