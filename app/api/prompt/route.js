@@ -7,7 +7,7 @@ export const GET = async () => {
         await connectToDB();
         const allPrompts = await Prompt.find({}).populate("creator");
 
-        return NextResponse.json(allPrompts, { status: 200 });
+        return new Response(JSON.stringify(allPrompts), { status: 200 });
     } catch (error) {
         return NextResponse("Failed to fetch all prompts", { status: 500 });
     }
