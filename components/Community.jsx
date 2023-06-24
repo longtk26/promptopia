@@ -21,7 +21,7 @@ const Community = () => {
 
                 setPrompts(results);
             } else {
-                const res = await fetch("/api/prompt");
+                const res = await fetch("/api/prompt", { cache: "no-store" });
                 const allPrompts = await res.json();
                 allPrompts.reverse();
 
