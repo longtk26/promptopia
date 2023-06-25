@@ -12,8 +12,8 @@ const Profile = () => {
     const getPrompts = async (userId) => {
         const res = await fetch(`/api/prompt/${userId}`);
         const prompts = await res.json();
-        prompts.reverse();
-        setPrompts(prompts);
+        prompts?.reverse();
+        setPrompts(prompts || []);
     };
 
     useEffect(() => {
