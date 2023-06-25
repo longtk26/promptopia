@@ -20,7 +20,7 @@ const Profile = () => {
         if (session) {
             getPrompts(session?.user?.id);
         }
-    }, [session]);
+    }, [prompts]);
 
     if (session) {
         return (
