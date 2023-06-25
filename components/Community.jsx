@@ -15,21 +15,27 @@ const Community = () => {
 
     useEffect(() => {
         const getAllPromptsOrSearchPrompt = async () => {
-            if (textQuery !== "") {
-                const res = await fetch(`/api/search?q=${textQuery}`);
-                const results = await res.json();
+            // if (textQuery !== "") {
+            //     const res = await fetch(`/api/search?q=${textQuery}`);
+            //     const results = await res.json();
 
-                setPrompts(results);
-            } else {
-                const res = await fetch("/api/prompt", { cache: "no-store" });
-                const allPrompts = await res.json();
-                allPrompts.reverse();
+            //     setPrompts(results);
+            // } else {
+            //     const res = await fetch("/api/prompt", { cache: "no-store" });
+            //     const allPrompts = await res.json();
+            //     allPrompts.reverse();
 
-                setPrompts(allPrompts);
-            }
+            //     setPrompts(allPrompts);
+            // }
+
+            const res = await fetch("/api/prompt");
+            const allPrompts = await res.json();
+            allPrompts.reverse();
+
+            setPrompts(allPrompts);
         };
         getAllPromptsOrSearchPrompt();
-    }, [textQuery]);
+    }, []);
 
     return (
         <>

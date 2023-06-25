@@ -19,7 +19,7 @@ const Form = ({ title, action, promptId }) => {
         const tag = e.target[1].value;
 
         if (action === "Create") {
-            createPrompt(
+            await createPrompt(
                 setButtonAction,
                 session?.user.id,
                 prompt,
@@ -28,7 +28,7 @@ const Form = ({ title, action, promptId }) => {
             );
             router.push("/");
         } else {
-            editPrompt(setButtonAction, promptId, prompt, tag);
+            await editPrompt(setButtonAction, promptId, prompt, tag);
             router.push("/");
         }
     };
